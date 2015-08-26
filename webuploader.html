@@ -397,9 +397,12 @@
             withCredentials: true,
             success: function(json) {
                 gToken = json.token;
-                initImage({token: gToken, imageUploadUrl: config.imageUploadUrl, imagePicker: '#image-picker',
+
+                //如果你配置了如qiniu等图片服务器，就可以使用下面的方法，并且在图片上传成功后获得弹出框，提示上传文件的名字和地址
+
+              /*  initImage({token: gToken, imageUploadUrl: config.imageUploadUrl, imagePicker: '#image-picker',
                      imageUrl: config.imageUrl,
-                    width: config.thumbnailWidth, height: config.thumbnailHeight});
+                    width: config.thumbnailWidth, height: config.thumbnailHeight});*/
 
 
             },
@@ -408,6 +411,31 @@
         });
 
 
+        //下面这部分是用来离线预览，在你没有图片服务器情况下，注释掉上面的initImage，同时，使用下面这段，你就可以通过拖动和点击预览图片
+        //但是现在由于点击的bug，需要先改变窗口大小才能点击上传生效，正解决
+        /*bug的解决部分在webuploader.js   me.on( 'all', function( type ) {
+
+
+        var files;
+        switch ( type ) {
+
+
+        }
+
+        和
+         label.on( 'click', function() {
+         //姜波注释，当label被点击后，触发input file控件点击
+
+         input.trigger('click');
+         });
+
+         window.resize处
+         */
+
+
+        initImage({imageUploadUrl: config.imageUploadUrl, imagePicker: '#image-picker',
+            imageUrl: config.imageUrl,
+            width: config.thumbnailWidth, height: config.thumbnailHeight});
 
         function initImage(config) {
             // 图片相关
@@ -480,8 +508,9 @@
 
                 var appElement = document.querySelector('[ng-controller=imgController]');
                 var $scope = angular.element(appElement).scope();
-                //每次上传一个，就从待上传文件数组里删除一个
 
+
+                //每次上传一个，就从待上传文件数组里删除一个
                 $scope.fileArr.pop();
 
 
@@ -490,6 +519,7 @@
                     var filename= $scope.imgArr[i].name;
                     if(filename==file.name){
 
+                        //将对应图片名称的对象元素里填充对应的服务器图片地址url
                         $scope.imgArr[i].servurl = config.imageUrl + '/' + response.key;
 
 
@@ -503,6 +533,7 @@
 
 
 
+                   //在文件还未完成上传成功时，去除文件数组最后一个元素，进行上传
                     var file = $scope.fileArr[$scope.fileArr.length-1];
 
 
