@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="view" content="width=device-width;user-scalable=no;initial-scale=1.0">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="/css/imgholder.css" rel="stylesheet">
+    <link href="/css/webuploader.css" rel="stylesheet">
+
+    <script src="/js/jquery.js"></script>
+
+    <script src="/js/bootstrap.js"></script>
+
+    <script src="/js/angular.min.js"></script>
+
+
+    <script src="/js/webuploader.js"></script>
+
+
+
+    <style>
+
+        .image-host{
+
+            width:96%;
+
+           height:440px;
+
+            margin:0 2%;
+            background-color:#eeeeee;
+        }
+
+        .image-block{
+
+            position:relative;
+            width:100px;
+            height:124px;
+
+            margin:10px 10px;
+            float:left;
+            display:inline-block;
+
+        }
+
+        .image-box{
+
+            width:100px;
+            height:104px;
+           padding:2px 0;
+        }
+        .image-block img{
+
+            width:100px;
+            height:100px;
+
+        }
+
+        .image-name{
+
+            width:100px;
+            height:20px;
+        }
+
+        .category{
+
+            width:100%;
+
+            height:4rem;
+
+            margin-bottom: 10px;
+
+        }
+        .category-desc{
+
+            float:left;
+            width:10rem;
+            line-height:2.5rem;
+            margin-right:10px;
+
+
+        }
+
+        .category-desc span{
+
+          float:right
+        }
+        .category-item{
+            float:left;
+            width:6rem;
+
+            line-height:2.5rem;
+
+            text-align: center;
+            border:1px solid gray;
+
+            margin-right:5px;
+
+            
+
+        }
+
+        .category-item:hover{
+
+            cursor:pointer;
+
+        }
+
+        .category-item span{
+
+
+
+        }
+
+
+        header{
+
+            margin:0px 20px;
+            height:4rem;
+            position:relative;
+
+            border:1px solid black;
+        }
+        header nav{
+
+            display:inline-block;
+            margin:20px;
+
+        }
+
+        header nav:first-child{
+            float:left;
+
+        }
+
+        header nav:first-child a{
+            color:gray;
+
+        }
+        header nav:nth-child(2){
+            float:right;
+
+            line-height:2.5em;
+            width:400px;
+            border:transparent;
+
+
+        }
+
+        header nav:nth-child(2) a{
+
+           display:inline-block;
+            float:left;
+
+            width:6rem;
+
+            line-height:1.5rem;
+
+
+            border-right:1px solid lightgray;
+            text-align: center;
+            margin-right:5px;
+
+            color:black;
+        }
+
+
+       .mycontent{
+
+            position:relative;
+
+           height:600px;
+
+            margin:0 20px;
+            padding-top:30px;
+
+
+           border:1px solid gray;
+
+        }
+
+       .search{
+
+           height:50px;
+
+           margin:0 10px;
+       }
+
+       .display{
+
+
+           height:500px;
+           background:lightgray;
+
+           margin:0 10px;
+       }
+
+.dnd{
+
+    display:none;
+    width:400px;
+    height:400px;
+    background-color: gray;
+}
+
+
+    </style>
+</head>
+
+<body >
+
+<script>
+//draggable="true"
+    var img_block;
+    $(document).ready(function(){
+        img_block = $('div.image-host').html();
+
+
+    });
+</script>
+
+
+
+
+<div ng-app="imgApp" ng-controller="imgController">
+
+
+    <header>
+       <nav class="service-type">
+
+           <a href="/html/">HTML</a> >
+           <a href="/css/">CSS</a> >
+           <a href="/js/">JavaScript</a> >
+           <a href="/jquery/">jQuery</a>
+       </nav>
+        <nav ><a href="#"   ng-repeat="one in categoryArr">{{one.type}}</a></nav>
+    </header>
+
+    <section class="mycontent">
+        <section class="search">
+
+            <div style="float:left;display:inline-block;"> <input type="text" placeholder="输入相关关键词搜索"> <button class="btn btn-primary">搜索</button></div>
+            <div style="float:right;display:inline-block;"><a class="btn btn-primary" style="width:120px;float:right" href="" role="button" data-toggle="modal"
+                                                                               data-target="#myImgModal" >添加图片</a></div>
+        </section>
+
+
+
+        <section  class="display">
+            <div class="image-block" ng-repeat="one in imgArr">
+
+                <div class="image-box"><img ng-src="{{one.url}}"></div>
+                <div class="image-name">{{one.name}}</div>
+
+            </div>
+
+        </section>
+
+    </section>
+
+
+    <!-- 模态框（Modal） -->
+    <div class="pt-goods-modal fade" id="myImgModal" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="pt-goods-modal-dialog">
+            <div class="pt-goods-modal-content">
+                <div class="pt-goods-modal-header">
+
+                    <div  id="image-picker">添加本地文件</div>
+                    <!--class="btn btn-default" style="width:120px;margin:0 0;background-color:lightgray;"  role="button"-->
+                </div>
+                <div class="pt-goods-modal-body">
+                    <div role="form">
+                        <div class="form-group">
+
+                            <div class="image-host" >
+                                <div class="image-block" ng-repeat="one in imgArr">
+                                       <input type="hidden" value="{{one.servurl}}">
+                                       <div class="image-box"><img ng-src="{{one.url}}"></div>
+                                      <div class="image-name">{{one.name}}</div>
+
+                                </div>
+
+                            </div>
+
+
+
+                        </div><!--form_group-->
+                    </div><!--role=form-->
+                </div>
+                <div class="pt-goods-modal-footer">
+                    <div class="category">
+                        <div class="category-desc"><span>将图片添加到:</span></div>
+                        <div class="category-item" ng-repeat="one in categoryArr" ng-click="selCategory($index)" style="background-color:{{one.bgcolor}}"><span>{{one.type}}</span></div>
+                    </div>
+
+
+                    <div class="yesno" ><div><button  class="btn btn-primary yes" id="confirmed" ng-click="modalconfirm()" data-dismiss="modal" >确认提交</button></div><div><button class="btn   no"   data-dismiss="modal">取消</button></div></div>
+
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+</div>
+<!--<div class="more_image">
+    <input type="button" id="moreimg" value="增加图片">
+</div>-->
+<div class="dnd"></div>
+
+<script>
+    $(function () {
+
+
+
+
+      /*  $('#myImgModal').on('show.bs.modal', function (e) {
+            alert('嘿，我听说您喜欢模态框...');
+        })*/
+    });
+</script>
+
+
+<script>
+
+    var imgurlArr = new Array();
+    var imageUploader;
+
+    function parseParams(url) {
+        url = decodeURIComponent(url);
+        var params = {};
+        var idx = url.indexOf("?");
+        if (idx > 0) {
+            var queryStr = url.substring(idx + 1);
+            if (queryStr.length > 0) {
+                var arr = queryStr.split("&");
+                for (i = 0; i < arr.length; i++) {
+                    var pair = arr[i].split("=")
+                    if (pair.length == 2 && pair[0].length > 0) {
+                        params[pair[0]] = pair[1];
+                    }
+                }
+            }
+        }
+
+        return params;
+    }
+
+
+    jQuery(function($) {
+
+
+        //阻止浏览器默认行。
+        $(document).on({
+            dragleave:function(e){    //拖离
+                e.preventDefault();
+            },
+            drop:function(e){  //拖后放
+                e.preventDefault();}
+            ,
+            dragenter:function(e){    //拖进
+                e.preventDefault();
+            },
+            dragover:function(e){    //拖来拖去
+                e.preventDefault();
+            }
+        });
+
+
+        var config = {
+
+            swfUri: '/webuploader/0.1.5/.swf',
+
+            tokenUrl : 'http://cms.putao.so/uptoken',
+            imageUrl : 'http://img.putao.so',
+            imageUploadUrl : 'http://upload.qiniu.com/',
+            thumbnailWidth : 275,//285,
+            thumbnailHeight : 186//204
+        }
+        var paramObj = parseParams(window.location.href);
+        var CPID = paramObj.cpid;
+        var APPID = paramObj.appid;
+        var APPNAME = paramObj.appname;
+        var GOODSID = paramObj.goodsid;
+        var gToken = null;
+
+
+
+        // 全局令牌
+        $.ajax({
+            url: config.tokenUrl,
+            type: 'POST',
+            dataType:'json',
+            crossDomain: true,
+            withCredentials: true,
+            success: function(json) {
+                gToken = json.token;
+                initImage({token: gToken, imageUploadUrl: config.imageUploadUrl, imagePicker: '#image-picker',
+                     imageUrl: config.imageUrl,
+                    width: config.thumbnailWidth, height: config.thumbnailHeight});
+
+
+            },
+            error:function(){
+            }
+        });
+
+
+
+        function initImage(config) {
+            // 图片相关
+            // 文件上传相关
+            imageUploader = WebUploader.create({
+                auto: true,
+                swf: 'static/.swf',
+                server: config.imageUploadUrl,
+                pick: config.imagePicker,
+                fileVal: 'file',
+                resize: false,
+                fileNumLimit: 1,
+                accept: {
+                    title: '请选择正确类型图片',
+                    extensions: 'gif,jpg,jpeg,bmp,png',
+                    mimeTypes: 'image/*'
+                },
+               dnd:'.image-host'//用来设置接收drag and drop的容器picker
+            });
+
+
+
+
+            var appElement = document.querySelector('[ng-controller=imgController]');
+            var $scope = angular.element(appElement).scope();
+
+            imageUploader.on('beforeFileQueued', function(file) {
+                imageUploader.reset();
+            });
+            imageUploader.on('fileQueued', function(file) {
+
+
+                imageUploader.makeThumb( file, function(error, src) {
+                    if (error) {
+                        alert('不能预览');
+                        return;
+                    }
+
+                    //当用户未点击按钮时，为预览状态，用户拖动图片生成预览，
+                    //当用户点击按钮时，将图片上传，不将图片再次插入预览部分，避免重复
+                 if($scope.preview){
+
+
+                     var obj = new Object();
+                     obj.url = src;
+                     obj.name = file.name;
+                     obj.servurl ='';
+
+                     $scope.imgArr.push(obj);
+                     $scope.$apply();
+
+
+
+                 }
+
+
+
+
+                }, config.width, config.height);
+
+            });
+            imageUploader.on('uploadBeforeSend', function(object, data, headers) {
+                data.token = config.token;
+            });
+            imageUploader.on('uploadSuccess', function(file, response) {
+
+
+                alert(file.name+'-'+config.imageUrl + '/' + response.key);
+                //alert(file.name);
+
+                var appElement = document.querySelector('[ng-controller=imgController]');
+                var $scope = angular.element(appElement).scope();
+                //每次上传一个，就从待上传文件数组里删除一个
+
+                $scope.fileArr.pop();
+
+
+                for(var i=0;i<$scope.imgArr.length;i++){
+
+                    var filename= $scope.imgArr[i].name;
+                    if(filename==file.name){
+
+                        $scope.imgArr[i].servurl = config.imageUrl + '/' + response.key;
+
+
+                    }
+                }
+
+                $scope.$apply();
+
+                if($scope.fileArr.length>0)
+               {
+
+
+
+                    var file = $scope.fileArr[$scope.fileArr.length-1];
+
+
+                   //由于webuploader批量上传文件时，全部预览后，却只调用了一次上传，所以需要将剩下未被上传的文件一次上传
+                   //保证每个文件上传后只显示一次，在第一个文件上传成功后，将下次addfile循环中makethumb中的显示Preview
+                   //设为false，这样就不会重复显示了
+                    $scope.preview = false;
+                    this.request( 'add-file', [ file]);
+
+
+               }
+
+
+
+
+
+
+            });
+            imageUploader.on('uploadError', function(file) {
+                //    MyPlatform.showDialog({title : '提示', msg: '上传图片失败!', okBtn: '确定'});
+                // imageUploader.reset();
+            });
+
+        }
+
+
+
+    });
+
+</script>
+
+<script>
+
+    angular.module('imgApp',[]).controller('imgController',function($http,$rootScope){
+
+        $rootScope.imgArr = [];//[{'url':'http://ww3.sinaimg.cn/mw600/672ac5f1jw1dyvqs9ya0zj.jpg'},{'url':'http://ww3.sinaimg.cn/mw600/672ac5f1jw1dyvqs9ya0zj.jpg'}];
+
+        $rootScope.categoryArr = [{'type':'广告图片','bgcolor':'white'},{'type':'大图标','bgcolor':'white'},{'type':'小图标','bgcolor':'white'},{'type':'优惠劵','bgcolor':'white'},{'type':'其它','bgcolor':'white'}];
+        $rootScope.fileArr = [];
+
+
+        $rootScope.imageUploader = {};
+
+        //设置用户拖动图片时，是否生成图片预览
+        $rootScope.preview = true;
+
+
+        $rootScope.selCategory= function($index){
+
+            for(var i=0;i<$rootScope.categoryArr.length;i++){
+
+                $rootScope.categoryArr[i].bgcolor = 'white';
+            }
+
+            $rootScope.categoryArr[$index].bgcolor = 'lightgreen';
+
+
+        }
+
+
+    });
+
+
+    //注意查看 webuploder.js里对pick 和 dnd里的 修改，关键词是 add-file的使用
+</script>
+
+</body>
+</html>
